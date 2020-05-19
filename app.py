@@ -19,6 +19,7 @@ def webhook():
     res = json.dumps(req['queryResult']['parameters'], indent=4)
     int_features=json.loads(res)
     a.append(int_features)
+    print(a)
     
     if(len(a)==13):
          
@@ -31,7 +32,7 @@ def webhook():
         result.headers['Content-Type'] = 'application/json'
         return result
     else:
-        return None
+        return ("hi")
     
      
     
