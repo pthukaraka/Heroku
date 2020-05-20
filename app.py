@@ -19,10 +19,7 @@ def webhook():
         int_features=json.loads(res)
         print(int_features)
         final_features=pd.DataFrame({'age':[int(int_features['age']['amount'])],'sex':[int(int_features['sex'])],'cp':[int(int_features['cp'])],'trestbps':[int(int_features['trestbps'])],'chol':[int(int_features['chol'])],'fbs':[int(int_features['fbs'])],'restecg':[int(int_features['restecg'])],'thalach':[int(int_features['thalach'])],'exang':[int(int_features['exang'])],'oldpeak':[float(int_features['oldpeak'])],'slope':[float(int_features['slope'])],'ca':[int(int_features['ca'])],'thal':[int(int_features['thal'])]})
-        prediction=model.predict_proba(final_features)
-        print(prediction)
-        pred=(prediction[0][0]*0.842)
-        r=get_data(pred)
+        r=get_data(final_features)
         print(r)
         r=json.dumps(r)
         result = make_response(r)
@@ -30,8 +27,9 @@ def webhook():
         return result
      
  
-def get_data(pred):
-   
+def get_data(final_features):
+   prediction=model.predict_proba(final_features)
+   pred=(prediction[0][0]*0.842)
    if (pred<0.5):
         pred='You have '+ str((1-pred)*100)+'%'+' possibility of having heart disease.Please take immediate action to cure your self.'
    elif (0.5<=pred<0.75):
@@ -42,6 +40,7 @@ def get_data(pred):
     
    return {
        "fulfillmentText" : pred,
+       "intent": final_features
         
    }
  
