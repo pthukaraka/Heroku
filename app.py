@@ -11,8 +11,7 @@ import pickle
 # Flask app should start in global layout
 app = Flask(__name__)
 model=pickle.load(open('model.pkl','rb')) 
-global a
-a=[]
+ 
 @app.route('/webhook', methods=['POST'])
 def webhook():
         req = request.get_json(silent=True, force=True)
@@ -44,7 +43,7 @@ def get_data(prediction):
     
    return {
        "fulfillmentText" : pred,
-        intent:prediction
+        
    }
  
 if __name__ == '__main__':
